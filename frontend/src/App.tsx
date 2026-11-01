@@ -8,7 +8,7 @@ type Project = { _id: string; name: string; description: string; taskCount: numb
 type Comment = { _id: string; text: string; author?: { name: string }; createdAt: string };
 type Task = { _id: string; title: string; description: string; status: "todo"|"inprogress"|"done"; priority: "low"|"medium"|"high"; dueDate?: string; assignee?: {name:string;email:string}; comments: Comment[] };
 
-const API_SOCKET = import.meta.env.VITE_SOCKET_URL || "http://localhost:5000";
+const API_SOCKET = import.meta.env.VITE_SOCKET_URL || `${window.location.protocol}//${window.location.hostname}:5000`;
 const statusLabel = { todo: "To do", inprogress: "In progress", done: "Completed" };
 
 export default function App() {

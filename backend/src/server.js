@@ -1,5 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
+import "dotenv/config";
 import http from "http";
 import app from "./app.js";
 import { Server } from "socket.io";
@@ -8,6 +7,7 @@ import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import Project from "./models/Project.js";
 import { sessionTokenFromCookie } from "./middleware/auth.js";
+import { corsOptions } from "./cors.js";
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 || /^(replace|change|example)/i.test(process.env.JWT_SECRET)) {
   throw new Error("Set JWT_SECRET to a unique random value of at least 32 characters.");
@@ -15,7 +15,7 @@ if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 32 || /^(replace|
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: process.env.CLIENT_URL || "http://localhost:5173", methods: ["GET", "POST", "PATCH", "DELETE"], credentials: true }
+  cors: { ...corsOptions, methods: ["GET", "POST", "PATCH", "DELETE"] }
 });
 app.set("io", io);
 io.use(async (socket, next) => {
